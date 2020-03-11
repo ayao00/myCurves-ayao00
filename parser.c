@@ -89,7 +89,7 @@ void parse_file ( char * filename,
     struct matrix *tmp;
     double theta;
     char axis;
-    double x0[5],y0[5],x1[5],y1[5],x2[5],y2[5],x3[5],y3[5],rx0[5],ry0[5],rx1[5],ry1[5];
+    double x0[5],y0[5],x1[5],y1[5],x2[5],y2[5],x3[5],y3[5];
 
     if ( strncmp(line, "line", strlen(line)) == 0 ) {
       fgets(line, sizeof(line), f);
@@ -182,23 +182,19 @@ void parse_file ( char * filename,
     }//end circle
     else if ( strncmp(line, "bezier", strlen(line)) == 0 ) {
       fgets(line, sizeof(line), f);
-      printf("BEZIER\t%s", line);
+      // printf("BEZIER\t%s", line);
       sscanf(line, "%lf %lf %lf %lf %lf %lf %lf %lf\n",
              x0,y0,x1,y1,x2,y2,x3,y3);
-      printf("here3\n");
-      add_curve(edges,x0[0], y0[0], x1[0], y1[0], x2[0], y2[0], x3[0], y3[0],150,1);
-      printf("here4\n");
+      add_curve(edges,x0[0], y0[0], x1[0], y1[0], x2[0], y2[0], x3[0], y3[0],100,BEZIER);
       draw_lines(edges,s,c);
       display(s);
     }//end bezier
     else if ( strncmp(line, "hermite", strlen(line)) == 0 ) {
       fgets(line, sizeof(line), f);
-      printf("HERMITE\t%s", line);
-      sscanf(line, "%lf %lf %lf %lf%lf %lf %lf %lf",
-             x0,y0,x1,y1,rx0,ry0,rx1,ry1);
-      printf("here1\n");
-      add_curve(edges,x0[0], y0[0], x1[0], y1[0], rx0[0], ry0[0], rx1[0], ry1[0],150,0);
-      printf("here2\n");
+      // printf("HERMITE\t%s", line);
+      sscanf(line, "%lf %lf %lf %lf %lf %lf %lf %lf\n",
+             x0,y0,x1,y1,x2,y2,x3,y3);
+      add_curve(edges,x0[0], y0[0], x1[0], y1[0], x2[0], y2[0], x3[0], y3[0],100,HERMITE);
       draw_lines(edges,s,c);
       display(s);
     }//end hermite

@@ -20,13 +20,32 @@
   to generate the coefiecients for a bezier curve
   ====================*/
 struct matrix * make_bezier() {
-  struct matrix * ans = new_matrix(4,4);
-  add_edge(ans,-1,3,-3,3,-6,3);
-  add_edge(ans,-3,3,0,1,0,0);
-  ans->m[3][1] = 0;
-  ans->m[3][2] = 0;
-  ans->m[3][3] = 0;
-  return ans;
+  struct matrix * bez = new_matrix(4,4);
+  bez->m[0][0] = -1;
+  bez->m[0][1] = 3;
+  bez->m[0][2] = -3;
+  bez->m[0][3] = 1;
+
+  bez->m[1][0] = 3;
+  bez->m[1][1] = -6;
+  bez->m[1][2] = 3;
+  bez->m[1][3] = 0;
+
+  bez->m[2][0] = -3;
+  bez->m[2][1] = 3;
+  bez->m[2][2] = 0;
+  bez->m[2][3] = 0;
+
+  bez->m[3][0] = 1;
+  bez->m[3][1] = 0;
+  bez->m[3][2] = 0;
+  bez->m[3][3] = 0;
+  // add_edge(bez,-1,3,-3,3,-6,3);
+  // add_edge(bez,-3,3,0,1,0,0);
+  // bez->m[3][1] = 0;
+  // bez->m[3][2] = 0;
+  // bez->m[3][3] = 0;
+  return bez;
 }
 
 /*======== struct matrix * make_hermite() ==========
@@ -34,13 +53,27 @@ struct matrix * make_bezier() {
   to generate the coefiecients for a hermite curve
   ====================*/
 struct matrix * make_hermite() {
-  struct matrix * ans = new_matrix(4,4);
-  add_edge(ans,2,-2,1,-3,3,-2);
-  add_edge(ans,0,0,1,1,0,0);
-  ans->m[3][1] = -1;
-  ans->m[3][2] = 0;
-  ans->m[3][3] = 0;
-  return ans;
+  struct matrix * her = new_matrix(4,4);
+  her->m[0][0] = 2;
+  her->m[0][1] = -2;
+  her->m[0][2] = 1;
+  her->m[0][3] = 1;
+
+  her->m[1][0] = -3;
+  her->m[1][1] = 3;
+  her->m[1][2] = -2;
+  her->m[1][3] = -1;
+
+  her->m[2][0] = 0;
+  her->m[2][1] = 0;
+  her->m[2][2] = 1;
+  her->m[2][3] = 0;
+
+  her->m[3][0] = 1;
+  her->m[3][1] = 0;
+  her->m[3][2] = 0;
+  her->m[3][3] = 0;
+  return her;
 }
 
 /*======== struct matrix * generate_curve_coefs() ==========
@@ -62,24 +95,21 @@ struct matrix * generate_curve_coefs( double p0, double p1,
   add_point(ans,p0,p1,p2);
   ans->m[3][0] = p3;
 
-  print_matrix(ans);
   // ans->m[0][0] = p0;
   // ans->m[1][0] = p1;
   // ans->m[2][0] = p2;
   // ans->m[3][0] = p3;
   struct matrix * curve = new_matrix(4,4);
-  if(type == 1){
-    curve = make_bezier();
+  if(type == 0){
+    curve = make_hermite();
+    matrix_mult(curve, ans);
+    return ans;
   }
   else{
-    curve = make_hermite();
+    curve = make_bezier();
+    matrix_mult(curve, ans);
+    return ans;
   }
-  printf("here in generate\n");
-  matrix_mult(curve, ans);
-  printf("after multiply\n");
-  print_matrix(ans);
-  free_matrix(curve);
-  return ans;
 }
 
 /*======== struct matrix * make_translate() ==========
